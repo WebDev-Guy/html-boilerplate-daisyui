@@ -5,8 +5,9 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
     entry: "./src/script.ts",
     output: {
-        filename: "bundle.js",
+        filename: "script.js",
         path: path.resolve(__dirname, "dist"),
+        clean: true, // Ensures only necessary files are kept in the dist folder
     },
     resolve: {
         extensions: [".ts", ".js"],
@@ -39,8 +40,14 @@ module.exports = {
             filename: "style.css",
         }),
         new CopyWebpackPlugin({
-            patterns: [{ from: "src/html-assets", to: "assets" }],
+            patterns: [
+                { from: "./src/assets", to: "assets" },
+                { from: "./src/index.html", to: "index.html" }, // Ensures index.html is copied to the root of the dist folder
+                { from: "./src/robots.txt", to: "robots.txt" },
+                { from: "./src/site.webmanifest", to: "site.webmanifest" },
+            ],
         }),
     ],
-    mode: 'development'
+    mode: 'development',
+    devtool: false, // Disables source map generation
 };
